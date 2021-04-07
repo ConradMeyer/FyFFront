@@ -8,29 +8,22 @@ const RESULT = document.querySelector("#result");
 function search() {
     const options = { 
         method: 'POST',
-        body: JSON.stringify({keyword: KEYWORD.value, ubicacion: UBICACION.value}),
+        body: JSON.stringify({keyword: KEYWORD.value}),
         headers:{'Content-Type': 'application/json'}
       }
 
     fetch("/search", options)
       .then(res => res.json())
-      .then(res => res.map(el => pintar(el)))
+      .then(res => console.log(res))
       .catch(err => console.log(err))
 }
 
-function prueba() {
-  const options = { 
-      method: 'GET',
-      headers:{'Content-Type': 'application/json'}
-    }
+function pintar(data) {
 
-  fetch("/read", options)
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
+
 }
 
-BUSCAR.addEventListener("click", () => prueba());
+BUSCAR.addEventListener("click", () => search());
 
 SIGNIN.addEventListener("click",() => {
     window.location.href = "sign/signin/login.html"
