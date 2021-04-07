@@ -22,8 +22,9 @@ function pintar(data) {
   let div = document.createElement("div");
   div.setAttribute("class", "oferta")
 
-  let h2 = document.createElement("h2")
+  let h2 = document.createElement("a")
   let title = document.createTextNode(data.titulo)
+  h2.setAttribute("href", data.url)
   h2.appendChild(title)
   div.appendChild(h2)
 

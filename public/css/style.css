@@ -93,3 +93,14 @@ div.buscador {
     padding: 20px;
     color: black;
 }
+    .oferta a {
+        text-decoration: none;
+        font-size: 20px;
+        color: black;
+    }
+        .oferta a:hover {
+            text-decoration: underline;
+        }
+    .oferta h3 {
+        margin-top: 15px;
+    }

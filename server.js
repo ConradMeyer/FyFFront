@@ -69,6 +69,7 @@ server.post('/search', async (req, res) => {
 
     let resumenes = [];
     let titulos = [];
+    let urls = [];
 
     $('a.text-gray-700.font-weight-bold').each(function () {
         titulos.push($(this).text().trim().replace(/\t|\n/g, ""));
@@ -78,8 +79,12 @@ server.post('/search', async (req, res) => {
         resumenes.push($(this).text().trim().replace(/\t|\n/g, ""))
     });
 
+    $('a.text-gray-700.font-weight-bold').each(function () {
+        urls.push($(this).attr("href"));
+    });
+
     const result = resumenes.map((el, i) => {
-        const obj = {titulo: titulos[i], resumen: el}
+        const obj = {titulo: titulos[i], resumen: el, url: urls[i]}
         return obj
     })
 
