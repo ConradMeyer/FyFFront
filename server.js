@@ -1,5 +1,7 @@
 // ------ Importar dependencias ------
 const express = require('express');
+const axios = require('axios');
+const cheerio = require('cheerio');
 const mysql = require('mysql');
 const dotenv = require('dotenv').config();
 const jwt = require('jsonwebtoken');
@@ -60,20 +62,33 @@ server.post('/signup', (req, res) => {
 })
 
 // Leer usuarios
-server.get('/read', (req, res) => {
+server.post('/search', async (req, res) => {
 
-    connection.connect();
+    const html = await axios.get(`https://www.tecnoempleo.com/busqueda-empleo.php?te=${req.body.keyword}&pr=#buscador-ofertas`);
+    const $ = await cheerio.load(html.data);
 
-    connection.query('SELECT * FROM users', function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            res.send(results);
-        }
-    });  
-    
-    connection.end();
+    let resumenes = [];
+    let titulos = [];
+    let urls = [];
+
+    $('a.text-gray-700.font-weight-bold').each(function () {
+        titulos.push($(this).text().trim().replace(/\t|\n/g, ""));
+    });
+
+    $('span.d-block.fs--15.hidden-md-down.lead.text-gray-800').each(function () {
+        resumenes.push($(this).text().trim().replace(/\t|\n/g, ""))
+    });
+
+    $('a.text-gray-700.font-weight-bold').each(function () {
+        urls.push($(this).attr("href"));
+    });
+
+    const result = resumenes.map((el, i) => {
+        const obj = {titulo: titulos[i], resumen: el, url: urls[i]}
+        return obj
+    })
+
+    res.send(JSON.stringify(result))
 })
 
 // Crear usuario

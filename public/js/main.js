@@ -8,7 +8,7 @@ const RESULT = document.querySelector("#result");
 function search() {
     const options = { 
         method: 'POST',
-        body: JSON.stringify({keyword: KEYWORD.value, ubicacion: UBICACION.value}),
+        body: JSON.stringify({keyword: KEYWORD.value}),
         headers:{'Content-Type': 'application/json'}
       }
 
@@ -18,19 +18,25 @@ function search() {
       .catch(err => console.log(err))
 }
 
-function prueba() {
-  const options = { 
-      method: 'GET',
-      headers:{'Content-Type': 'application/json'}
-    }
+function pintar(data) {
+  let div = document.createElement("div");
+  div.setAttribute("class", "oferta")
 
-  fetch("/read", options)
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err))
+  let h2 = document.createElement("a")
+  let title = document.createTextNode(data.titulo)
+  h2.setAttribute("href", data.url)
+  h2.appendChild(title)
+  div.appendChild(h2)
+
+  let text = document.createElement("h3")
+  let resm = document.createTextNode(data.resumen)
+  text.appendChild(resm)
+  div.appendChild(text)
+
+  RESULT.appendChild(div)
 }
 
-BUSCAR.addEventListener("click", () => prueba());
+BUSCAR.addEventListener("click", () => search());
 
 SIGNIN.addEventListener("click",() => {
     window.location.href = "sign/signin/login.html"
