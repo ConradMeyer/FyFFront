@@ -45,22 +45,6 @@ async function pintar(data) {
   }
 }
 
-function guardarFav(data) {
-  const options = { 
-    method: 'POST',
-    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
-    headers:{
-      'Content-Type': 'application/json',
-      'authorization': sessionStorage.getItem('token')
-    }
-  }
-
-  fetch("/favorito", options)
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .catch(err => console.log("Algo va mal...", err))
-}
-
 function logout() {
   fetch("/logout", {
     method: 'PUT',
@@ -69,15 +53,13 @@ function logout() {
     }
   })
     .then(res => res.json())
-    .then(data => {
-        alert(data.data)
-    })
+    .then(data => alert(data.data))
     .catch(err => console.log(err))
 }
 
-function botones () {
-  SIGNIN.remove()
-  SIGNUP.remove()
+async function botones () {
+  await SIGNIN.remove()
+  await SIGNUP.remove()
 
   let btnFav = document.createElement("div")
   btnFav.setAttribute("class", "favoritos")
@@ -95,6 +77,80 @@ function botones () {
 
   btnOut.addEventListener("click", ()=> logout())
 }
+
+async function verFav() {
+  const options = { 
+    method: 'GET',
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': sessionStorage.getItem('token')
+    }
+  }
+
+  fetch("/verfavoritos", options)
+    .then(res => res.json())
+    .then(res => res.map(el => pintarFav(el)))
+    .catch(err => console.log("Algo va mal...", err))
+}
+
+async function pintarFav(data) {
+    await document.querySelectorAll(".oferta").forEach(el => el.remove())
+  
+    let div = document.createElement("div");
+    div.setAttribute("class", "oferta")
+  
+    let h2 = document.createElement("a")
+    let title = document.createTextNode(data.titulo)
+    h2.setAttribute("href", data.url)
+    h2.appendChild(title)
+    div.appendChild(h2)
+  
+    let text = document.createElement("h3")
+    let resm = document.createTextNode(data.resumen)
+    text.appendChild(resm)
+    div.appendChild(text)
+
+    let btn = document.createElement("div")
+    btn.setAttribute("class", "guardar")
+    let btnC = document.createTextNode("DELETE")
+    btn.appendChild(btnC)
+    div.appendChild(btn)
+
+    btn.addEventListener("click", ()=> deleteFav(data))
+}
+
+function guardarFav(data) {
+  const options = { 
+    method: 'POST',
+    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': sessionStorage.getItem('token')
+    }
+  }
+
+  fetch("/favorito", options)
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log("Algo va mal...", err))
+}
+
+function deleteFav(data) {
+  const options = { 
+    method: 'DELETE',
+    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': sessionStorage.getItem('token')
+    }
+  }
+
+  fetch("/favorito", options)
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log("Algo va mal...", err))
+}
+
 
 // CAMBIAR BOTONES
 if (sessionStorage.getItem('token')) {
