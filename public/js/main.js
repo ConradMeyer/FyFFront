@@ -3,8 +3,10 @@ const SIGNUP = document.querySelector("#signup");
 const KEYWORD = document.querySelector("#keyword");
 const UBICACION = document.querySelector("#ubicacion");
 const BUSCAR = document.querySelector("#btn");
+const RESET = document.querySelector("#btnReset");
 const RESULT = document.querySelector("#result");
 
+// FUNCIONES
 function search() {
     const options = { 
         method: 'POST',
@@ -15,10 +17,12 @@ function search() {
     fetch("/search", options)
       .then(res => res.json())
       .then(res => res.map(el => pintar(el)))
-      .catch(err => console.log(err))
+      .catch(err => console.log("Algo va mal...", err))
 }
 
-function pintar(data) {
+async function pintar(data) {
+  await document.querySelectorAll(".oferta").forEach(el => el.remove())
+
   let div = document.createElement("div");
   div.setAttribute("class", "oferta")
 
@@ -34,9 +38,50 @@ function pintar(data) {
   div.appendChild(text)
 
   RESULT.appendChild(div)
+  
+  if (sessionStorage.getItem("token")) {
+    let btn = document.createElement("div")
+    let btnC = document.createTextNode("SAVE")
+    btn.appendChild(btnC)
+    div.appendChild(btn)
+
+    btn.addEventListener("click", ()=> favoritos(data))
+  }
 }
 
+function favoritos(data) {
+  const options = { 
+    method: 'POST',
+    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
+    headers:{'Content-Type': 'application/json'}
+  }
+
+fetch("/favorito", options)
+  .then(res => res.json())
+  .then(res => res)
+  .catch(err => console.log("Algo va mal...", err))
+}
+
+function logout () {
+  fetch("/logout", {
+    method: 'PUT',
+    headers: {
+        'authorization': sessionStorage.getItem('token')
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+        alert(data.data)
+        window.location.href = data.url
+    })
+    .catch(err => console.log(err))
+}
+
+// EVENTOS
 BUSCAR.addEventListener("click", () => search());
+
+RESET.addEventListener("click", () => document.querySelectorAll(".oferta").forEach(el => el.remove()))
 
 SIGNIN.addEventListener("click",() => {
     window.location.href = "sign/signin/login.html"

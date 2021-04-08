@@ -75,6 +75,7 @@ div.buscador {
     .buscador button {
         background-color: orangered;
         color: white;
+        margin: 0px 5px;
         border: none;
         width: 100px;
         border-radius: 15px;
