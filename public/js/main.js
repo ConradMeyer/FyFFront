@@ -1,5 +1,6 @@
 const SIGNIN = document.querySelector("#signin");
 const SIGNUP = document.querySelector("#signup");
+const MENU = document.querySelector("#menu");
 const KEYWORD = document.querySelector("#keyword");
 const UBICACION = document.querySelector("#ubicacion");
 const BUSCAR = document.querySelector("#btn");
@@ -35,28 +36,32 @@ async function pintar(data) {
   
   if (sessionStorage.getItem("token")) {
     let btn = document.createElement("div")
+    btn.setAttribute("class", "guardar")
     let btnC = document.createTextNode("SAVE")
     btn.appendChild(btnC)
     div.appendChild(btn)
 
-    btn.addEventListener("click", ()=> favoritos(data))
+    btn.addEventListener("click", ()=> guardarFav(data))
   }
 }
 
-function favoritos(data) {
+function guardarFav(data) {
   const options = { 
     method: 'POST',
     body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
-    headers:{'Content-Type': 'application/json'}
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': sessionStorage.getItem('token')
+    }
   }
 
-fetch("/favorito", options)
-  .then(res => res.json())
-  .then(res => res.map(el =>pintar(el)))
-  .catch(err => console.log("Algo va mal...", err))
+  fetch("/favorito", options)
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log("Algo va mal...", err))
 }
 
-function logout () {
+function logout() {
   fetch("/logout", {
     method: 'PUT',
     headers: {
@@ -65,11 +70,35 @@ function logout () {
   })
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         alert(data.data)
-        window.location.href = data.url
     })
     .catch(err => console.log(err))
+}
+
+function botones () {
+  SIGNIN.remove()
+  SIGNUP.remove()
+
+  let btnFav = document.createElement("div")
+  btnFav.setAttribute("class", "favoritos")
+  let contA = document.createTextNode("FAVORITOS")
+  btnFav.appendChild(contA)
+  MENU.appendChild(btnFav)
+
+  let btnOut = document.createElement("div")
+  btnOut.setAttribute("class", "logout")
+  let contB = document.createTextNode("LOGOUT")
+  btnOut.appendChild(contB)
+  MENU.appendChild(btnOut)
+
+  btnFav.addEventListener("click", ()=> verFavoritos())
+
+  btnOut.addEventListener("click", ()=> logout())
+}
+
+// CAMBIAR BOTONES
+if (sessionStorage.getItem('token')) {
+  botones()
 }
 
 // EVENTOS

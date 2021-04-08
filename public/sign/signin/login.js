@@ -7,14 +7,14 @@ BTN.addEventListener("click", () => signin());
 function signin() {
     const options = { 
       method: 'POST',
-      body: JSON.stringify({user: EMAIL.value, pass:PASS.value }),
+      body: JSON.stringify({email: EMAIL.value, pass:PASS.value }),
       headers:{'Content-Type': 'application/json'}
     }
-    fetch("/login", options)
+    fetch("/signin", options)
         .then(data => data.json())
         .then(response => {
             if (response.status === 200) {
-                localStorage.setItem("token", response.data)
+                localStorage.setItem("token", response.token)
                 window.location.href = "http://localhost:8080/"
             }
             else if (response.status === 401) {
@@ -29,4 +29,4 @@ function signin() {
             }
         })
         .catch(err => console.log("Error con el servidor", err))
-  }
+}

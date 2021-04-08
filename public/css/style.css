@@ -50,6 +50,16 @@ div.menu {
             background-color: dodgerblue;
             color: white;
         }
+
+        div.menu .favoritos {
+            background-color: yellow;
+            color: black;
+        }
+
+        div.menu .logout {
+            background-color: dodgerblue;
+            color: black;
+        }
             div.menu>div:hover {
                 cursor: pointer;
                 transform: scale(1.05);
@@ -89,6 +99,7 @@ div.buscador {
 
 .result .oferta {
     width: 90%;
+    max-width: 1000px;
     background-color: rgba(128, 128, 128, 0.5);
     margin: 20px auto;
     padding: 20px;
@@ -105,3 +116,32 @@ div.buscador {
     .oferta h3 {
         margin-top: 15px;
     }
+    .oferta .guardar {
+        background-color: black;
+        color: whitesmoke;
+        font-weight: bold;
+        width: 10%;
+        min-width: 100px;
+        margin-top: 10px;
+        text-align: center;
+        padding: 5px;
+    }
+        .guardar:hover {
+            cursor: pointer;
+            background-color: whitesmoke;
+            color: black;
+            transform: scale(1.05);
+        }
+
+@media screen and ( max-width: 610px ) {
+    header  {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+    }
+
+    div.buscador {
+        width: 95%;
+    }
+
+}

@@ -62,9 +62,9 @@ server.post('/signup', (req, res) => {
 })
 
 // BUSCAR OFERTAS (SCRAPING)
-server.post('/search', async (req, res) => {
+server.get('/search/:keyword', async (req, res) => {
 
-    const html = await axios.get(`https://www.tecnoempleo.com/busqueda-empleo.php?te=${req.body.keyword}&ex=,1,2,&pr=#buscador-ofertas`);
+    const html = await axios.get(`https://www.tecnoempleo.com/busqueda-empleo.php?te=${req.params.keyword}&ex=,1,2,&pr=#buscador-ofertas`);
     const $ = await cheerio.load(html.data);
 
     let resumenes = [];
