@@ -7,14 +7,8 @@ const RESET = document.querySelector("#btnReset");
 const RESULT = document.querySelector("#result");
 
 // FUNCIONES
-function search() {
-    const options = { 
-        method: 'POST',
-        body: JSON.stringify({keyword: KEYWORD.value}),
-        headers:{'Content-Type': 'application/json'}
-      }
-
-    fetch("/search", options)
+function search() { 
+    fetch(`/search/${KEYWORD.value}`)
       .then(res => res.json())
       .then(res => res.map(el => pintar(el)))
       .catch(err => console.log("Algo va mal...", err))
@@ -58,7 +52,7 @@ function favoritos(data) {
 
 fetch("/favorito", options)
   .then(res => res.json())
-  .then(res => res)
+  .then(res => res.map(el =>pintar(el)))
   .catch(err => console.log("Algo va mal...", err))
 }
 
@@ -84,10 +78,10 @@ BUSCAR.addEventListener("click", () => search());
 RESET.addEventListener("click", () => document.querySelectorAll(".oferta").forEach(el => el.remove()))
 
 SIGNIN.addEventListener("click",() => {
-    window.location.href = "sign/signin/login.html"
+    window.location.href = "sign/signin"
 } )
 
 SIGNUP.addEventListener("click",() => {
-    window.location.href = "sign/signup/index.html"
+    window.location.href = "sign/signup"
 } )
 
