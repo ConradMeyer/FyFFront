@@ -36,7 +36,7 @@ const connection = mysql.createConnection({
 const validarEmail = mail => (/^\w+([\.-]?\w+)*@(?:|hotmail|outlook|yahoo|live|gmail)\.(?:|com|es)+$/.test(mail));
 const validarPass = pass => (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(pass));
   
-// Nuevo usuario
+// CREAR USUARIO
 server.post('/signup', (req, res) => {
 
     const USER =  `INSERT INTO users (email, pass) VALUES (${req.body.email}, ${md5(req.body.pass)})`
@@ -61,10 +61,10 @@ server.post('/signup', (req, res) => {
 
 })
 
-// Leer usuarios
+// BUSCAR OFERTAS (SCRAPING)
 server.post('/search', async (req, res) => {
 
-    const html = await axios.get(`https://www.tecnoempleo.com/busqueda-empleo.php?te=${req.body.keyword}&pr=#buscador-ofertas`);
+    const html = await axios.get(`https://www.tecnoempleo.com/busqueda-empleo.php?te=${req.body.keyword}&ex=,1,2,&pr=#buscador-ofertas`);
     const $ = await cheerio.load(html.data);
 
     let resumenes = [];
@@ -91,21 +91,3 @@ server.post('/search', async (req, res) => {
     res.send(JSON.stringify(result))
 })
 
-// Crear usuario
-server.post('/create', (req, res) => {
-
-    const newUser = `INSERT INTO users (email, pass) VALUES ('${req.body.email}', '${req.body.pass}')`
-
-    connection.connect();
-
-    connection.query(newUser, function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            res.send("Usuario creado");
-        }
-    });
-    
-    connection.close();
-})

@@ -7,11 +7,14 @@ CREATE TABLE users (
 
 CREATE TABLE favoritos (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  oferta NVARCHAR(100),
-  resumen VARCHAR(1500),
+  oferta NVARCHAR(150),
+  resumen VARCHAR(250),
+  url VARCHAR(300),
   idUsuario INT,
   FOREIGN KEY (idUsuario) REFERENCES usuarios(id)
+
 );
 
 INSERT INTO users (email, pass) VALUES
+('example', 'example'),
 ('example', 'example');
