@@ -52,7 +52,7 @@ div.menu {
         }
 
         div.menu .favoritos {
-            background-color: yellow;
+            background-color: whitesmoke;
             color: black;
         }
 
@@ -71,15 +71,16 @@ div.buscador {
     justify-content: center;
     margin: 50px auto;
     background-color: rgba(245, 245, 245, 0.6);
+    border-radius: 10px;
     padding: 12px;
     width: 80%;
 }
     .buscador input {
         padding: 10px;
         margin: 0px 10px;
-        width: 70%;
+        width: 30%;
         border: none;
-        border-radius: 15px;
+        border-radius: 10px;
         box-shadow: 0px 0px 20px 0px black;
     }
     .buscador button {
@@ -88,7 +89,7 @@ div.buscador {
         margin: 0px 5px;
         border: none;
         width: 100px;
-        border-radius: 15px;
+        border-radius: 10px;
         font-weight: bold;
         box-shadow: 0px 0px 20px 0px black;
     }
@@ -99,15 +100,19 @@ div.buscador {
 
 .result .oferta {
     width: 90%;
+    font-family: 'Times New Roman', Times, serif;
     max-width: 1000px;
-    background-color: rgba(128, 128, 128, 0.5);
+    background-color: whitesmoke;
     margin: 20px auto;
-    padding: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 15px -4px black;
     color: black;
 }
     .oferta a {
         text-decoration: none;
-        font-size: 20px;
+        font-size: 25px;
+        font-weight: bold;
         color: black;
     }
         .oferta a:hover {
@@ -115,23 +120,17 @@ div.buscador {
         }
     .oferta h3 {
         margin-top: 15px;
+        font-weight: normal;
     }
-    .oferta .guardar {
-        background-color: black;
-        color: whitesmoke;
-        font-weight: bold;
-        width: 10%;
-        min-width: 100px;
+    .oferta img {
         margin-top: 10px;
-        text-align: center;
-        padding: 5px;
+        width: 25px;
     }
-        .guardar:hover {
+        .oferta img:hover {
             cursor: pointer;
-            background-color: whitesmoke;
-            color: black;
-            transform: scale(1.05);
+            transform: scale(1.20);
         }
+     
 
 @media screen and ( max-width: 610px ) {
     header  {

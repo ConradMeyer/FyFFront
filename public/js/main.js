@@ -9,20 +9,33 @@ const RESULT = document.querySelector("#result");
 
 // FUNCIONES
 function search() { 
-    fetch(`/search/${KEYWORD.value}`)
+  const options = { 
+    method: 'GET',
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': localStorage.getItem('token')
+    }
+  }
+  if (UBICACION.value === "") {
+    UBICACION.value = "%20"
+  }
+  console.log(UBICACION.value);
+    fetch(`/search/${UBICACION.value}/${KEYWORD.value}`, options)
       .then(res => res.json())
-      .then(res => res.map(el => pintar(el)))
+      .then(res => {
+        document.querySelectorAll(".oferta").forEach(el => el.remove())
+        res.map(el => pintar(el))
+      })
       .catch(err => console.log("Algo va mal...", err))
 }
 
-async function pintar(data) {
-  await document.querySelectorAll(".oferta").forEach(el => el.remove())
-
+function pintar(data) {
   let div = document.createElement("div");
   div.setAttribute("class", "oferta")
 
   let h2 = document.createElement("a")
   let title = document.createTextNode(data.titulo)
+  h2.setAttribute("target", "_blank")
   h2.setAttribute("href", data.url)
   h2.appendChild(title)
   div.appendChild(h2)
@@ -34,26 +47,51 @@ async function pintar(data) {
 
   RESULT.appendChild(div)
   
-  if (sessionStorage.getItem("token")) {
-    let btn = document.createElement("div")
-    btn.setAttribute("class", "guardar")
-    let btnC = document.createTextNode("SAVE")
-    btn.appendChild(btnC)
-    div.appendChild(btn)
+  if (localStorage.getItem("token")) {
+    if (data.ok) {
+      let btnD = document.createElement("img")
+      btnD.setAttribute("src", "../assets/heart-solid.svg")
+      div.appendChild(btnD)
 
-    btn.addEventListener("click", ()=> guardarFav(data))
+      btnD.addEventListener("click", async ()=> {
+        await deleteFav2(data) 
+        await search()
+      })
+
+    } else if (!data.ok || data.ok == null) {
+      let btnS = document.createElement("img")
+      btnS.setAttribute("src", "../assets/heart-regular.svg")
+      div.appendChild(btnS)
+  
+      btnS.addEventListener("click", async ()=> {
+        await guardarFav(data)
+        await search()
+      })
+    }
   }
 }
 
 function logout() {
-  fetch("/logout", {
+  fetch("/signout", {
     method: 'PUT',
     headers: {
-        'authorization': sessionStorage.getItem('token')
+        'authorization': localStorage.getItem('token')
     }
   })
     .then(res => res.json())
-    .then(data => alert(data.data))
+    .then(data => {
+      if (data.status === 406) {
+        console.log(data.data);
+      }
+      else if (data.status === 200) {
+        localStorage.setItem('token', "")
+        alert(data.data)
+        window.location.reload()
+      }
+      else if (data.status === 401) {
+        console.log(data.data);
+      }
+    })
     .catch(err => console.log(err))
 }
 
@@ -73,23 +111,32 @@ async function botones () {
   btnOut.appendChild(contB)
   MENU.appendChild(btnOut)
 
-  btnFav.addEventListener("click", ()=> verFavoritos())
+  btnFav.addEventListener("click", ()=> verFav())
 
   btnOut.addEventListener("click", ()=> logout())
 }
 
-async function verFav() {
+function verFav() {
   const options = { 
     method: 'GET',
     headers:{
       'Content-Type': 'application/json',
-      'authorization': sessionStorage.getItem('token')
+      'authorization': localStorage.getItem('token')
     }
   }
-
-  fetch("/verfavoritos", options)
+  fetch("/favorites/get", options)
     .then(res => res.json())
-    .then(res => res.map(el => pintarFav(el)))
+    .then(res => {
+      if (res.status === 400) {
+        console.log(res.data);
+      }
+      else if (res.length == 0) {
+        document.querySelectorAll(".oferta").forEach(el => el.remove())
+      }
+      else {
+        res.map(el => pintarFav(el))
+      }
+    })
     .catch(err => console.log("Algo va mal...", err))
 }
 
@@ -110,11 +157,11 @@ async function pintarFav(data) {
     text.appendChild(resm)
     div.appendChild(text)
 
-    let btn = document.createElement("div")
-    btn.setAttribute("class", "guardar")
-    let btnC = document.createTextNode("DELETE")
-    btn.appendChild(btnC)
+    let btn = document.createElement("img")
+    btn.setAttribute("src", "../assets/heart-solid.svg")
     div.appendChild(btn)
+
+    RESULT.appendChild(div)
 
     btn.addEventListener("click", ()=> deleteFav(data))
 }
@@ -125,42 +172,102 @@ function guardarFav(data) {
     body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
     headers:{
       'Content-Type': 'application/json',
-      'authorization': sessionStorage.getItem('token')
+      'authorization': localStorage.getItem('token')
     }
   }
 
-  fetch("/favorito", options)
-    .then(res => res.json())
-    .then(res => console.log(res))
+  fetch("/favorites/create", options)
+    .then(response => response.json())
+    .then(res => {
+      if(res.status === 401){
+        alert(res.data)
+        window.location.reload()
+      }
+      else if (res.status === 406) {
+        alert(res.data)
+      }
+      else if (res.status === 200) {
+        // alert(res.data)
+      }
+      else {
+        console.log("QUE COÑO PASA?");
+      }
+    })
     .catch(err => console.log("Algo va mal...", err))
 }
 
 function deleteFav(data) {
   const options = { 
     method: 'DELETE',
-    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
+    body: JSON.stringify({url: data.url}),
     headers:{
       'Content-Type': 'application/json',
-      'authorization': sessionStorage.getItem('token')
+      'authorization': localStorage.getItem('token')
     }
   }
 
-  fetch("/favorito", options)
+  fetch("/favorites/delete", options)
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => {
+      if(res.status === 400) {
+        console.log(res.data);
+      }
+      else if (res.status === 406) {
+        console.log(res.data);
+      }
+      else if (res.status === 200) {
+        // alert(res.data)
+        verFav()
+      }
+      else if (res.status === 401) {
+        alert(res.data)
+      }
+    })
     .catch(err => console.log("Algo va mal...", err))
 }
 
+function deleteFav2(data) {
+  const options = { 
+    method: 'DELETE',
+    body: JSON.stringify({url: data.url}),
+    headers:{
+      'Content-Type': 'application/json',
+      'authorization': localStorage.getItem('token')
+    }
+  }
+
+  fetch("/favorites/delete", options)
+    .then(res => res.json())
+    .then(res => {
+      if(res.status === 400) {
+        console.log(res.data);
+      }
+      else if (res.status === 406) {
+        console.log(res.data);
+      }
+      else if (res.status === 200) {
+        // alert(res.data)
+      }
+      else if (res.status === 401) {
+        alert(res.data)
+      }
+    })
+    .catch(err => console.log("Algo va mal...", err))
+}
 
 // CAMBIAR BOTONES
-if (sessionStorage.getItem('token')) {
+if (localStorage.getItem('token')) {
   botones()
 }
 
 // EVENTOS
 BUSCAR.addEventListener("click", () => search());
 
-RESET.addEventListener("click", () => document.querySelectorAll(".oferta").forEach(el => el.remove()))
+RESET.addEventListener("click", () => {
+  KEYWORD.value = "";
+  UBICACION.value = "";
+  document.querySelectorAll(".oferta").forEach(el => el.remove())
+})
 
 SIGNIN.addEventListener("click",() => {
     window.location.href = "sign/signin"
