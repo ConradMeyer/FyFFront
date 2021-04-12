@@ -4,12 +4,17 @@ const BTN = document.querySelector("#signup");
 
 BTN.addEventListener("click", () => signup());
 
+
+
 function signup() {
     const options = { 
       method: 'POST',
       body: JSON.stringify({email: EMAIL.value, pass:PASS.value }),
       headers:{'Content-Type': 'application/json'}
     }
+
+    if (validateEmail(EMAIL.value) && validatePass(PASS.value) ){
+
     fetch("/signup", options)
         .then(res => res.json())
         .then(response => {
@@ -29,4 +34,29 @@ function signup() {
             }
         })
         .catch(err => console.log(err))
+
+    }
+        else if (!validateEmail(EMAIL.value)){
+
+            alert ("Introduce un email válido")
+        }
+        else if(!validatePass(PASS.value)){
+    
+            alert ("Introduce un pass válido, con al menos una mayúscula, un número y ocho caracteres");
+    
+        };
+    }
+
+
+// Funciones de validación
+function validateEmail(email) {
+    let patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return patternEmail.test(email);  
+ }
+
+ 
+
+ function validatePass(pass) {
+     let patternPass = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+     return patternPass.test(pass);  
 }

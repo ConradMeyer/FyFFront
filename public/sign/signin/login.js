@@ -31,18 +31,20 @@ function signin() {
             .catch(err => console.log("Error con el servidor", err))
     }
 
-    else if (validateEmail!=(EMAIL.value)){
+    else if (!validateEmail(EMAIL.value)){
 
         alert ("Introduce un email válido")
     }
-    else if(validatePass(PASS.value)){
+    else if(!validatePass(PASS.value)){
 
-        alert ("Introduce un pass válido");
+        alert ("Introduce un pass válido, con al menos una mayúscula, un número y ocho caracteres");
 
     };
 }
 console.log(patternEmail.test("josehotmail.com"))
 
+
+// Funciones de validación
 function validateEmail(email) {
     let patternEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return patternEmail.test(email);  
