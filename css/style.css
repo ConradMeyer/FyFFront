@@ -29,22 +29,24 @@ div.titulo {
     color: orangered;
 }
     .subtitulo {
-        margin-bottom: 20px;
+        margin-bottom: 5px;
     }
 div.menu {
     display: flex;
+    font-weight: bold;
     flex-direction: row;
     margin-top: -100px;
     margin-right: 20px;
 }
     div.menu>div {
         background-color: whitesmoke;
+        margin-top: 20px;
         margin: 15px;
         padding: 8px 12px;
         text-align: center;
         border-radius: 15px;
         box-shadow: 0px 0px 20px 0px black;
-        font-weight: bolder;
+        width: 110px;
     }
         div.menu .signup {
             background-color: dodgerblue;
@@ -83,12 +85,17 @@ div.buscador {
         border-radius: 10px;
         box-shadow: 0px 0px 20px 0px black;
     }
+    .buscador input:focus {
+        outline: none;
+    }
+
     .buscador button {
         background-color: orangered;
         color: white;
         margin: 0px 5px;
         border: none;
         width: 100px;
+        font-weight: bold;
         border-radius: 10px;
         font-weight: bold;
         box-shadow: 0px 0px 20px 0px black;
@@ -97,10 +104,12 @@ div.buscador {
             cursor: pointer;
             transform: scale(1.05);
         }
-
+        .buscador button:focus {
+            outline: none;
+        }
 .result .oferta {
     width: 90%;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     max-width: 1000px;
     background-color: whitesmoke;
     margin: 20px auto;
@@ -132,6 +141,10 @@ div.buscador {
         }
      
 
+.btn{
+    border-radius: 20px;
+}
+
 @media screen and ( max-width: 610px ) {
     header  {
         display: flex;
@@ -142,5 +155,50 @@ div.buscador {
     div.buscador {
         width: 95%;
     }
+
+}
+
+
+
+@media screen and ( max-width: 610px ) {
+    div.menu{
+        margin-top: -187px;
+    }
+    div.buscador {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 10px;
+        margin-top: 120px;
+    }
+
+    .buscador input {
+        margin: 5px auto;
+        width: 90%;
+    }
+
+    .buscador button {
+        margin: 10px 10px;
+        padding: 6px;
+    }
+
+    div.main{
+        height: auto;
+        padding-bottom: 1px;
+    }
+
+    div.titulo{
+        margin-top: 100px;
+    }
+
+  .oferta a{
+      font-size: 22px;
+  }
+
+  .oferta h3{
+      font-size: 18px;
+  }
+
 
 }

@@ -16,10 +16,20 @@ function search() {
       'authorization': localStorage.getItem('token')
     }
   }
-  if (UBICACION.value === "") {
-    UBICACION.value = "%20"
+
+  UBICACION.value = UBICACION.value.trim()
+  KEYWORD.value = KEYWORD.value.trim()
+  
+  if (UBICACION.value == "") {
+      fetch(`/search/${"nada"}/${KEYWORD.value}`, options)
+      .then(res => res.json())
+      .then(res => {
+        document.querySelectorAll(".oferta").forEach(el => el.remove())
+        res.map(el => pintar(el))
+      })
+      .catch(err => console.log("Algo va mal...", err))
   }
-  console.log(UBICACION.value);
+  else {
     fetch(`/search/${UBICACION.value}/${KEYWORD.value}`, options)
       .then(res => res.json())
       .then(res => {
@@ -27,6 +37,7 @@ function search() {
         res.map(el => pintar(el))
       })
       .catch(err => console.log("Algo va mal...", err))
+  }
 }
 
 function pintar(data) {
@@ -169,7 +180,7 @@ async function pintarFav(data) {
 function guardarFav(data) {
   const options = { 
     method: 'POST',
-    body: JSON.stringify({titulo: data.titulo, resumen: data.resumen, url: data.url}),
+    body: JSON.stringify( { titulo: data.titulo, resumen: data.resumen, url: data.url } ),
     headers:{
       'Content-Type': 'application/json',
       'authorization': localStorage.getItem('token')
@@ -277,3 +288,14 @@ SIGNUP.addEventListener("click",() => {
     window.location.href = "sign/signup"
 } )
 
+KEYWORD.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    search()
+  }
+})
+
+UBICACION.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    search()
+  }
+})
