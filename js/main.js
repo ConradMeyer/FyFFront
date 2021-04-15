@@ -30,7 +30,7 @@ function search() {
       .catch(err => console.log("Algo va mal...", err))
   }
   else {
-    fetch(`/search/${UBICACION.value}/${KEYWORD.value}`, options)
+    fetch(`https://stormy-cliffs-44487.herokuapp.com/search/${UBICACION.value}/${KEYWORD.value}`, options)
       .then(res => res.json())
       .then(res => {
         document.querySelectorAll(".oferta").forEach(el => el.remove())
