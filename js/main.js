@@ -11,8 +11,9 @@ const RESULT = document.querySelector("#result");
 function search() { 
   const options = { 
     method: 'GET',
+    mode: 'cors',
     headers:{
-      'Access-Control-Allow-Origin': 'https://fyf-greenteam.netlify.app/',
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       'authorization': localStorage.getItem('token')
     }
