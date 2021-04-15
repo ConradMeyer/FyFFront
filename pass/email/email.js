@@ -9,7 +9,7 @@ function sendEmail() {
     body: JSON.stringify({ email: EMAIL.value }),
     headers: { "Content-Type": "application/json" },
   };
-  fetch("https://radiant-ridge-52793.herokuapp.com/user/newpass", options)
+  fetch("https://stormy-cliffs-44487.herokuapp.com/user/newpass", options)
     .then((data) => data.json())
     .then((response) => {
       console.log(response);

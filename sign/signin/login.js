@@ -11,7 +11,7 @@ function signin() {
       headers:{'Content-Type': 'application/json'}
     }
     if (validateEmail(EMAIL.value) && validatePass(PASS.value) ){
-        fetch("https://radiant-ridge-52793.herokuapp.com/signin", options)
+        fetch("https://stormy-cliffs-44487.herokuapp.com/signin", options)
             .then(data => data.json())
             .then(response => {
                 if (response.status === 200) {
@@ -53,7 +53,7 @@ function onSignIn(googleUser) {
         body: JSON.stringify({email: profile.getEmail()}),
         headers:{'Content-Type': 'application/json'}
       }
-        fetch("https://radiant-ridge-52793.herokuapp.com/signin/google", options)
+        fetch("https://stormy-cliffs-44487.herokuapp.com/signin/google", options)
             .then(data => data.json())
             .then(response => {
                 if (response.status === 200) {

@@ -17,7 +17,7 @@ function newPass() {
             }
         }
         if (validatePass(PASS.value) ){
-            fetch("https://radiant-ridge-52793.herokuapp.com/user/changepass", options)
+            fetch("https://stormy-cliffs-44487.herokuapp.com/user/changepass", options)
                 .then(data => data.json())
                 .then(response => {
                     if (response.status === 200) {
