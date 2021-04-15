@@ -12,6 +12,7 @@ function search() {
   const options = { 
     method: 'GET',
     headers:{
+      'Access-Control-Allow-Origin': 'https://fyf-greenteam.netlify.app/',
       'Content-Type': 'application/json',
       'authorization': localStorage.getItem('token')
     }
