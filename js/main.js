@@ -11,9 +11,9 @@ const RESULT = document.querySelector("#result");
 function search() { 
   const options = { 
     method: 'GET',
-    mode: 'no-cors',
+    mode: 'cors',
     headers:{
-      // 'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
       'authorization': localStorage.getItem('token')
     }
