@@ -9,22 +9,22 @@ function sendEmail() {
     body: JSON.stringify({ email: EMAIL.value }),
     headers: { "Content-Type": "application/json" },
   };
-  fetch("/user/newpass", options)
+  fetch("https://radiant-ridge-52793.herokuapp.com/user/newpass", options)
     .then((data) => data.json())
     .then((response) => {
       console.log(response);
       if (response.status === 200) {
         alert(response.data);
-        window.location.href = "http://localhost:8080/";
+        window.location.href = "https://fyf-greenteam.netlify.app/";
       } else if (response.status === 404) {
         alert(response.data);
-        window.location.href = "http://localhost:8080/";
+        window.location.href = "https://fyf-greenteam.netlify.app/";
       } else if (response.status === 500) {
         alert(response.data);
-        window.location.href = "http://localhost:8080/";
+        window.location.href = "https://fyf-greenteam.netlify.app/";
       } else {
         alert(response.data);
-        window.location.href = "http://localhost:8080/";
+        window.location.href = "https://fyf-greenteam.netlify.app/";
       }
     })
     .catch((err) => console.log("Error con el servidor", err));

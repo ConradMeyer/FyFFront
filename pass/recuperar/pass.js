@@ -17,12 +17,12 @@ function newPass() {
             }
         }
         if (validatePass(PASS.value) ){
-            fetch("/user/changepass", options)
+            fetch("https://radiant-ridge-52793.herokuapp.com/user/changepass", options)
                 .then(data => data.json())
                 .then(response => {
                     if (response.status === 200) {
                         alert(response.data)
-                        window.location.href = "http://localhost:8080/sign/signin"
+                        window.location.href = "https://fyf-greenteam.netlify.app//sign/signin"
                     }
                     else if (response.status === 400) {
                         alert(response.data)

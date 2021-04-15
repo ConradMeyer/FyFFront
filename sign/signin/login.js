@@ -11,13 +11,13 @@ function signin() {
       headers:{'Content-Type': 'application/json'}
     }
     if (validateEmail(EMAIL.value) && validatePass(PASS.value) ){
-        fetch("/signin", options)
+        fetch("https://radiant-ridge-52793.herokuapp.com/signin", options)
             .then(data => data.json())
             .then(response => {
                 if (response.status === 200) {
                     alert(response.data)
                     localStorage.setItem("token", response.token)
-                    window.location.href = "http://localhost:8080/"
+                    window.location.href = "https://fyf-greenteam.netlify.app/"
                 }
                 else if (response.status === 401) {
                     alert(response.data)
@@ -53,13 +53,13 @@ function onSignIn(googleUser) {
         body: JSON.stringify({email: profile.getEmail()}),
         headers:{'Content-Type': 'application/json'}
       }
-        fetch("/signin/google", options)
+        fetch("https://radiant-ridge-52793.herokuapp.com/signin/google", options)
             .then(data => data.json())
             .then(response => {
                 if (response.status === 200) {
                     alert(response.data)
                     localStorage.setItem("token", response.token)
-                    window.location.href = "http://localhost:8080/"
+                    window.location.href = "https://fyf-greenteam.netlify.app/"
                 }
                 else if (response.status === 401) {
                     alert(response.data)

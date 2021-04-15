@@ -11,16 +11,16 @@ function signup() {
       headers:{'Content-Type': 'application/json'}
     }
     if (validateEmail(EMAIL.value) && validatePass(PASS.value) ){
-        fetch("/signup", options)
+        fetch("https://radiant-ridge-52793.herokuapp.com/signup", options)
             .then(res => res.json())
             .then(response => {
                 if (response.status === 200) {
                     alert(response.data)
-                    window.location.href = "http://localhost:8080/sign/signin/"
+                    window.location.href = "https://fyf-greenteam.netlify.app/sign/signin/"
                 }
                 else if (response.status === 400) {
                     alert(response.data)
-                    window.location.href = "http://localhost:8080/sign/signin/"
+                    window.location.href = "https://fyf-greenteam.netlify.app/sign/signin/"
                 }
                 else if (response.status === 406) {
                     alert(response.data)
@@ -46,17 +46,17 @@ function onSignIn(googleUser) {
         body: JSON.stringify({email: profile.getEmail()}),
         headers:{'Content-Type': 'application/json'}
       }
-      fetch("/signup/google", options)
+      fetch("https://radiant-ridge-52793.herokuapp.com/signup/google", options)
           .then(res => res.json())
           .then(response => {
               if (response.status === 200) {
                   alert(response.data)
                   localStorage.setItem('token', response.token)
-                  window.location.href = "http://localhost:8080/"
+                  window.location.href = "https://fyf-greenteam.netlify.app/"
               }
               else if (response.status === 405) {
                   alert(response.data)
-                  window.location.href = "http://localhost:8080/sign/signin/"
+                  window.location.href = "https://fyf-greenteam.netlify.app/sign/signin/"
               }
               else if (response.status === 400) {
                   alert(response.data)

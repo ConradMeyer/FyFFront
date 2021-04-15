@@ -21,7 +21,7 @@ function search() {
   KEYWORD.value = KEYWORD.value.trim()
   
   if (UBICACION.value == "") {
-      fetch(`/search/${"nada"}/${KEYWORD.value}`, options)
+      fetch(`https://radiant-ridge-52793.herokuapp.com/search/${"nada"}/${KEYWORD.value}`, options)
       .then(res => res.json())
       .then(res => {
         document.querySelectorAll(".oferta").forEach(el => el.remove())
@@ -83,7 +83,7 @@ function pintar(data) {
 }
 
 function logout() {
-  fetch("/signout", {
+  fetch("https://radiant-ridge-52793.herokuapp.com/signout", {
     method: 'PUT',
     headers: {
         'authorization': localStorage.getItem('token')
@@ -135,7 +135,7 @@ function verFav() {
       'authorization': localStorage.getItem('token')
     }
   }
-  fetch("/favorites/get", options)
+  fetch("https://radiant-ridge-52793.herokuapp.com/favorites/get", options)
     .then(res => res.json())
     .then(res => {
       if (res.status === 400) {
@@ -188,7 +188,7 @@ function guardarFav(data) {
     }
   }
 
-  fetch("/favorites/create", options)
+  fetch("https://radiant-ridge-52793.herokuapp.com/favorites/create", options)
     .then(response => response.json())
     .then(res => {
       if(res.status === 401){
@@ -218,7 +218,7 @@ function deleteFav(data) {
     }
   }
 
-  fetch("/favorites/delete", options)
+  fetch("https://radiant-ridge-52793.herokuapp.com/favorites/delete", options)
     .then(res => res.json())
     .then(res => {
       if(res.status === 400) {
@@ -248,7 +248,7 @@ function deleteFav2(data) {
     }
   }
 
-  fetch("/favorites/delete", options)
+  fetch("https://radiant-ridge-52793.herokuapp.com/favorites/delete", options)
     .then(res => res.json())
     .then(res => {
       if(res.status === 400) {
