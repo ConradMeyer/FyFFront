@@ -17,6 +17,7 @@ body {
 }
 
 .form {
+    text-align: center;
     width: 90%;
     max-width: 500px;
     background-color: white;
