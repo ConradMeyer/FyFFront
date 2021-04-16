@@ -84,7 +84,10 @@ div.buscador {
     .buscador input:focus {
         outline: none;
     }
-
+    .buscador .menu-btn {
+        display: flex;
+        flex-direction: row;
+    }
     .buscador button {
         background-color: orangered;
         color: white;
